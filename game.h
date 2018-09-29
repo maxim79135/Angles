@@ -87,13 +87,16 @@ private:
     bool canMove(int x, int y);
     bool canMove(const QPoint &point) { return canMove(point.x(), point.y()); }
 
-    int getHeuristicEvulation();
+    int getHeuristicEvulation(ChekerType cheker);
     int runMinMax(ChekerType cheker, int recursiveLevel, int alpha, int beta);
     void temporaryChekerMovement(int chekerindex, int x, int y);
     void temporaryChekerMovement(int chekerindex, const QPoint &point) { temporaryChekerMovement(chekerindex, point.x(), point.y()); }
 
     void prepareMap();
     void initialize();
+
+//signals:
+//    void isTurnCheker(QPoint prevPos, QPoint newPos);
 };
 
 #endif // GAME_H

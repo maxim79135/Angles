@@ -24,13 +24,18 @@ private:
     Game* game;
     QPoint mousePosition;
     QPoint realMousePosition;
+    QColor backGroundcolorOne;
+    QColor backGroundcolorTwo;
+    QColor chekercolorOne;
+    QColor chekercolorTwo;
 
 protected:
     void paintEvent(QPaintEvent *event);
 private slots:
     void on_pbPlay_clicked();
+    void on_actionSave_triggered();
+    void on_actionOpen_triggered();
 
-    // QWidget interface
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

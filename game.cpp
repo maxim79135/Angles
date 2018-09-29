@@ -7,10 +7,10 @@ Game::Game() : active(false), selectedCheker(-1)
     possibleMoves[1] = QPoint(1, 0);
     possibleMoves[2] = QPoint(0, 1);
     possibleMoves[3] = QPoint(0, -1);
-    possibleMoves[4] = QPoint(-2, 0);
-    possibleMoves[5] = QPoint(2, 0);
-    possibleMoves[6] = QPoint(0, 2);
-    possibleMoves[7] = QPoint(0, -2);
+    //possibleMoves[4] = QPoint(-2, 0);
+    //possibleMoves[5] = QPoint(2, 0);
+    //possibleMoves[6] = QPoint(0, 2);
+    //possibleMoves[7] = QPoint(0, -2);
     initialize();
 }
 
@@ -53,6 +53,8 @@ bool Game::canMoveToPosition(int chekerIndex, const QPoint &pos) {
     QPoint diff = oldPosition - pos;
     QPoint sum = oldPosition + pos;
 
+    //for (int i = 0; i < )
+
     if (abs(diff.x()) == 2 || abs(diff.y()) == 2)
         for (int i = 0; i < getMonsterCount(); i++)
             if (getChekerIndexPosition(pos) == -1 &&
@@ -73,19 +75,27 @@ bool Game::moveSelectedChekerToPosition(const QPoint &pos) {
     if (selectedCheker < 0) return false;
 
     if (canMoveToPosition(selectedCheker, pos))
-        if (selectedCheker < 9)
+        if (selectedCheker < 9) {
+            //emit isTurnCheker(reds[selectedCheker], pos);
             reds[selectedCheker] = pos;
-        else
+        } else {
+            //emit isTurnCheker(blues[selectedCheker - 9], pos);
             blues[selectedCheker - 9] = pos;
+        }
         else
             return false;
 
     //if (isGameOver(CT_RED)) return true;
 
     chekerTurn = !chekerTurn;
-    runMinMax(gamemode == CT_RED ? CT_BLUE : CT_RED, 0, -EPIC_BIG_VALUE, EPIC_BIG_VALUE);
+    prepareMap();
+    runMinMax(gamemode == CT_RED ? CT_BLUE : CT_RED, AILevel, -EPIC_BIG_VALUE, EPIC_BIG_VALUE);
     chekerTurn = !chekerTurn;
-
+/*
+    QString s;
+    s.setNum(test);
+    QMessageBox::information(0, "1", s);
+*/
     //isGameOver(CT_RED);
     return true;
 }
@@ -127,102 +137,93 @@ bool Game::canMove(int x, int y) {
     if (!checkRange(x, y))
         return false;
 
-    if (map[x][y] != 0)
+    if (map[y][x] != 0)
         return false;
     return true;
 }
 
-int Game::getHeuristicEvulation() {
-    if (reds[8].y() >= 0 && reds[8].x() > 0 && reds[8].y() <= 2 && reds[8].x() <= 2) return 0;
-    searchWay.clear();
-    searchWay.enqueue(reds[8]);
-
-    while (!searchWay.empty()) {
-        QPoint currentPosition = searchWay.dequeue();
-        for (int i = 0; i < 8; i++)
-            if (canMove(currentPosition + possibleMoves[i])) {
-                QPoint newPosition = currentPosition + possibleMoves[i];
-                map[newPosition.y()][newPosition.x()] = map[currentPosition.y()][currentPosition.x()] + 1;
-                searchWay.enqueue(newPosition);
-            }
-    }
-
+int Game::getHeuristicEvulation(ChekerType cheker) {
     int min = MAX_VALUE;
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            if (map[i][j] > MIN_VALUE && map[i][j] < min)
-                min = map[i][j];
+    if (cheker == CT_RED) {
+    searchWay.clear();
+    for (int k = 0; k < 9; k++) {
+        //if (reds[i].y() >= 0 && reds[i].x() >= 0 && reds[i].y() <= 2 && reds[i].x() <= 2) return 0;
+        searchWay.enqueue(reds[k]);
+
+        while (!searchWay.empty()) {
+            QPoint currentPosition = searchWay.dequeue();
+            for (int i = 0; i < 4; i++)
+                if (canMove(currentPosition + possibleMoves[i])) {
+                    QPoint newPosition = currentPosition + possibleMoves[i];
+                    map[newPosition.y()][newPosition.x()] = map[currentPosition.y()][currentPosition.x()] + 1;
+                    searchWay.enqueue(newPosition);
+                }
+        }
+
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                if (map[i][j] > MIN_VALUE && map[i][j] < min)
+                    min = map[i][j];
+    }
+    } else {
+        searchWay.clear();
+        for (int k = 0; k < 9; k++) {
+            //if (blues[i].y() >= 5 && blues[i].x() >= 5 && blues[i].y() <= 7 && blues[i].x() <= 7) return 0;
+            searchWay.enqueue(blues[k]);
+
+
+        while (!searchWay.empty()) {
+            QPoint currentPosition = searchWay.dequeue();
+            for (int i = 0; i < 4; i++)
+                if (canMove(currentPosition + possibleMoves[i])) {
+                    QPoint newPosition = currentPosition + possibleMoves[i];
+                    map[newPosition.y()][newPosition.x()] = map[currentPosition.y()][currentPosition.x()] + 1;
+                    searchWay.enqueue(newPosition);
+                }
+        }
+
+        for (int i = 5; i < 8; i++)
+            for (int j = 5; j < 8; j++)
+                if (map[i][j] > MIN_VALUE && map[i][j] < min)
+                    min = map[i][j];
+        }
+    }
     return min - 1;
 }
 
 int Game::runMinMax(Game::ChekerType cheker, int recursiveLevel, int alpha, int beta) {
-    if (recursiveLevel == 0) prepareMap();
+    if (recursiveLevel == 0) return getHeuristicEvulation(cheker);
     int test = NOT_INITIALIZED;
-
-    if (recursiveLevel >= AILevel * 2) {
-        //int heuristic = getHeuristicEvulation();
-        prepareMap();
-        //return heuristic;
-    }
 
     int bestMove = NOT_INITIALIZED;
     bool isRed = (cheker == CT_RED);
-    int MinMax = isRed ? MIN_VALUE : MAX_VALUE;
-    prepareMap();
 
-    //for (int i = isRed ? 0 : 72; i < isRed ? 72 : 18 * 8; i++)
-    for (int i = 0; i < 72; i++)
+    for (int i = (isRed ? 0 : 72); i < (isRed ? 72 : 137); i++)
     {
         int curCheker = i / 8;
-        QPoint curChekerPos = blues[curCheker];
-        QPoint curMove = possibleMoves[i % 8];
+        QPoint curChekerPos = curCheker < 9 ? reds[curCheker] : blues[curCheker - 9];
+        QPoint curMove = possibleMoves[i % 4];
 
-        if (canMove(curChekerPos + curMove)) {
-            bestMove = i;
-            MinMax = 1;
-            //if (recursiveLevel == 0 && bestMove != NOT_INITIALIZED) {
-                if (cheker == CT_BLUE)
-                    blues[bestMove / 8] += possibleMoves[bestMove % 8];
-                else
-                    reds[bestMove / 8] += possibleMoves[bestMove % 8];
-            //}
-            return MinMax;
-        }
-    }
-            /*
+        if (canMove(curChekerPos + curMove) && alpha < beta) {
             temporaryChekerMovement(curCheker, curMove);
-            test = runMinMax(isRed ? CT_BLUE : CT_RED, recursiveLevel + 1, alpha, beta);
+            test = -runMinMax(isRed ? CT_BLUE : CT_RED, recursiveLevel - 1, -beta, -alpha);
             temporaryChekerMovement(curCheker, -curMove);
 
-            if ((test > MinMax && cheker == CT_BLUE) ||
-                    (test <= MinMax && cheker == CT_RED) ||
-                    bestMove == NOT_INITIALIZED) {
-                MinMax = test;
+            if (test > alpha) {
+                alpha = test;
                 bestMove = i;
             }
-
-            if (isRed)
-                alpha = qMax(alpha, beta);
-            else
-                beta = qMin(beta, test);
-
-            if (beta < alpha) break;
         }
     }
 
-    if (bestMove == NOT_INITIALIZED) {
-        int heuristic = getHeuristicEvulation();
-        prepareMap();
-        return heuristic;
-    }
+    if (recursiveLevel == AILevel && bestMove != NOT_INITIALIZED) {
+    if (cheker == CT_BLUE)
+        blues[bestMove / 8 - 9] += possibleMoves[bestMove % 4];
+    else
+        reds[bestMove / 8] += possibleMoves[bestMove % 4];
 
-    if (recursiveLevel == 0 && bestMove != NOT_INITIALIZED) {
-        if (cheker == CT_BLUE)
-            blues[bestMove / 8 - 9] += possibleMoves[bestMove % 8];
-        else
-            reds[bestMove / 8] += possibleMoves[bestMove % 8];
-    }*/
-    return MinMax;
+    }
+    return alpha;
 }
 
 void Game::temporaryChekerMovement(int chekerindex, int x, int y) {
@@ -238,9 +239,12 @@ void Game::temporaryChekerMovement(int chekerindex, int x, int y) {
 }
 
 void Game::prepareMap() {
-    for (int i = 0; i < 8; i++)
+    /*for (int i = 0; i < 8; i++)
         for (int j = 0; j < 8; j++)
-            map[i][j] = EMPTY;
+            map[i][j] = EMPTY;*/
+
+    for (int i = 0; i < 8; i++)
+        memset(map[i],0, 8 * sizeof(int));
     for (int i = 0; i < 8; i++) {
         map[reds[i].y()][reds[i].x()] = RED;
         map[blues[i].y()][blues[i].x()] = BLUE;

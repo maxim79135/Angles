@@ -17,6 +17,8 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
@@ -29,6 +31,11 @@ QT_BEGIN_NAMESPACE
 class Ui_View
 {
 public:
+    QAction *actionSave;
+    QAction *actionOpen;
+    QAction *actionColor;
+    QAction *actionGame;
+    QAction *actionMore;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
@@ -43,15 +50,29 @@ public:
     QSpinBox *sbAILevel;
     QPushButton *pbPlay;
     QSpacerItem *verticalSpacer;
+    QMenuBar *menuBar;
+    QMenu *menuFile;
+    QMenu *menuOptions;
+    QMenu *menuAbout;
 
     void setupUi(QMainWindow *View)
     {
         if (View->objectName().isEmpty())
             View->setObjectName(QStringLiteral("View"));
-        View->resize(515, 400);
-        View->setMinimumSize(QSize(515, 400));
-        View->setMaximumSize(QSize(515, 400));
+        View->resize(515, 415);
+        View->setMinimumSize(QSize(515, 415));
+        View->setMaximumSize(QSize(515, 415));
         View->setBaseSize(QSize(500, 400));
+        actionSave = new QAction(View);
+        actionSave->setObjectName(QStringLiteral("actionSave"));
+        actionOpen = new QAction(View);
+        actionOpen->setObjectName(QStringLiteral("actionOpen"));
+        actionColor = new QAction(View);
+        actionColor->setObjectName(QStringLiteral("actionColor"));
+        actionGame = new QAction(View);
+        actionGame->setObjectName(QStringLiteral("actionGame"));
+        actionMore = new QAction(View);
+        actionMore->setObjectName(QStringLiteral("actionMore"));
         centralWidget = new QWidget(View);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -121,6 +142,25 @@ public:
         horizontalLayout->addWidget(widget);
 
         View->setCentralWidget(centralWidget);
+        menuBar = new QMenuBar(View);
+        menuBar->setObjectName(QStringLiteral("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 515, 20));
+        menuFile = new QMenu(menuBar);
+        menuFile->setObjectName(QStringLiteral("menuFile"));
+        menuOptions = new QMenu(menuBar);
+        menuOptions->setObjectName(QStringLiteral("menuOptions"));
+        menuAbout = new QMenu(menuBar);
+        menuAbout->setObjectName(QStringLiteral("menuAbout"));
+        View->setMenuBar(menuBar);
+
+        menuBar->addAction(menuFile->menuAction());
+        menuBar->addAction(menuOptions->menuAction());
+        menuBar->addAction(menuAbout->menuAction());
+        menuFile->addAction(actionSave);
+        menuFile->addAction(actionOpen);
+        menuOptions->addAction(actionColor);
+        menuAbout->addAction(actionGame);
+        menuAbout->addAction(actionMore);
 
         retranslateUi(View);
 
@@ -130,11 +170,34 @@ public:
     void retranslateUi(QMainWindow *View)
     {
         View->setWindowTitle(QApplication::translate("View", "View", nullptr));
+        actionSave->setText(QApplication::translate("View", "Save", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionSave->setShortcut(QApplication::translate("View", "Alt+S", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionOpen->setText(QApplication::translate("View", "Open", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionOpen->setShortcut(QApplication::translate("View", "Alt+O", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionColor->setText(QApplication::translate("View", "Color", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionColor->setShortcut(QApplication::translate("View", "Alt+C", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionGame->setText(QApplication::translate("View", "Game", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionGame->setShortcut(QApplication::translate("View", "Alt+G", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionMore->setText(QApplication::translate("View", "More", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionMore->setShortcut(QApplication::translate("View", "Alt+M", nullptr));
+#endif // QT_NO_SHORTCUT
         gbPlayMode->setTitle(QApplication::translate("View", "Play mode", nullptr));
         rbRed->setText(QApplication::translate("View", "Red", nullptr));
         rbBlue->setText(QApplication::translate("View", "Blue", nullptr));
         gbLevel->setTitle(QApplication::translate("View", "Level", nullptr));
         pbPlay->setText(QApplication::translate("View", "Start", nullptr));
+        menuFile->setTitle(QApplication::translate("View", "File", nullptr));
+        menuOptions->setTitle(QApplication::translate("View", "Options", nullptr));
+        menuAbout->setTitle(QApplication::translate("View", "About", nullptr));
     } // retranslateUi
 
 };

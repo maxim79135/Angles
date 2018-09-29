@@ -12,6 +12,12 @@ View::View(QWidget *parent) :
     updater->start(30);
 
     connect(updater, SIGNAL(timeout()), SLOT(update()));
+
+    backGroundcolorOne = Qt::darkGray;
+    backGroundcolorTwo = Qt::white;
+    chekercolorOne = QColor(0, 0, 139);
+    chekercolorTwo = QColor(139, 0, 0);
+
 }
 
 void View::setGame(Game* game)
@@ -30,15 +36,15 @@ void View::paintEvent(QPaintEvent *)
     p.setPen(Qt::NoPen);
 
     //draw grid
-    p.setBrush(QBrush(Qt::darkGray));
+    p.setBrush(QBrush(backGroundcolorOne));
     for (int i = 0; i < 8; i++)
         for (int k = 0; k < 8; k++)
-            if ((i + k) % 2 == 0) p.drawRect(i * 50, k * 50, 50, 50);
+            if ((i + k) % 2 == 0) p.drawRect(i * 50, k * 50 + 15, 50, 50);
 
-    p.setBrush(QBrush(Qt::white));
+    p.setBrush(QBrush(backGroundcolorTwo));
     for (int i = 0; i < 8; i++)
         for (int k = 0; k < 8; k++)
-            if ((i + k) % 2 != 0) p.drawRect(i * 50, k * 50, 50, 50);
+            if ((i + k) % 2 != 0) p.drawRect(i * 50, k * 50 + 15, 50, 50);
 
     p.setPen(Qt::SolidLine);
     p.drawLine(400, 0, 400, 400);
@@ -46,8 +52,8 @@ void View::paintEvent(QPaintEvent *)
     //draw chekers
     for (int i = 0; i < this->game->getMonsterCount(); i++) {
         if (i != game->getSelectedChekerIndex()) {
-        p.setBrush(QBrush(this->game->getChekerType(i) == Game::CT_BLUE ? Qt::darkBlue : Qt::darkRed));
-        p.drawEllipse(this->game->getMonsterPosition(i) * 50 + QPoint(25,25) , 20, 20);
+        p.setBrush(QBrush(this->game->getChekerType(i) == Game::CT_BLUE ? chekercolorOne : chekercolorTwo));
+        p.drawEllipse(this->game->getMonsterPosition(i) * 50 + QPoint(25,25) + QPoint(0, 15), 20, 20);
         }
     }
 
@@ -57,14 +63,14 @@ void View::paintEvent(QPaintEvent *)
               || mousePosition.x() > 7 || mousePosition.y() > 7))
         if (game->canMoveToPosition(game->getSelectedChekerIndex(), mousePosition)) {
             p.setPen(QPen(QBrush(Qt::black), 5));
-            p.setBrush(QBrush(QColor(mousePosition.x() + mousePosition.y() % 2 == 0 ? Qt::darkGray : Qt::white), Qt::NoBrush));
-            p.drawRect(QRect(mousePosition * 50, QSize(50, 50)));
+            p.setBrush(QBrush(QColor(mousePosition.x() + mousePosition.y() % 2 == 0 ? backGroundcolorOne : backGroundcolorTwo), Qt::NoBrush));
+            p.drawRect(QRect(mousePosition * 50 + QPoint(0, 15), QSize(50, 50)));
         }
     }
 
     if (game->getSelectedChekerIndex() >= 0) {
-        p.setPen(Qt::NoPen);
-        p.setBrush(QBrush(QColor(game->getChekerType(game->getSelectedChekerIndex()) == Game::CT_BLUE ? Qt::darkBlue : Qt::darkRed)));
+        p.setPen(QPen(QBrush(Qt::yellow), 3));
+        p.setBrush(QBrush(QColor(game->getChekerType(game->getSelectedChekerIndex()) == Game::CT_BLUE ? chekercolorOne : chekercolorTwo)));
         p.drawEllipse(realMousePosition, 20, 20);
     }
 }
@@ -108,3 +114,36 @@ void View::mouseReleaseEvent(QMouseEvent *event) {
     if (game->isGameOver(winner))
         QMessageBox::information(0, "Attention", winner == game->getPlayMode() ? "You win" : "You lost");
 }
+
+void View::on_actionSave_triggered() {
+    QFile file(QFileDialog::getSaveFileName(this, QString::fromUtf8("Save"),
+                                            QDir::currentPath(),
+                                            "Log (*.bat)"));
+    if (file.open(QIODevice::WriteOnly)) {
+        QString s;
+        s = backGroundcolorOne.name();
+        file.write(s.toUtf8());
+        file.write("\n");
+        s = backGroundcolorTwo.name();
+        file.write(s.toUtf8());
+        file.close();
+    }
+}
+
+void View::on_actionOpen_triggered() {
+    QFile file(QFileDialog::getOpenFileName(this, QString::fromUtf8("Open"),
+                                 QDir::currentPath(),
+                                 "Log (*.bat)"));
+    if (file.open(QIODevice::ReadOnly)) {
+        QQueue <QColor> colors;
+        while (!file.atEnd()) {
+            QString str = file.readLine();
+            QColor temp(str);
+            colors.enqueue(temp);
+        }
+        backGroundcolorOne = colors.dequeue();
+        backGroundcolorTwo = colors.dequeue();
+        file.close();
+    }
+}
+
