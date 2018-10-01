@@ -13,16 +13,14 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -33,27 +31,44 @@ class Ui_View
 public:
     QAction *actionSave;
     QAction *actionOpen;
-    QAction *actionColor;
-    QAction *actionGame;
-    QAction *actionMore;
+    QAction *action1;
+    QAction *action2;
+    QAction *action3;
+    QAction *action1_2;
+    QAction *action2_2;
+    QAction *action3_2;
+    QAction *action1_3;
+    QAction *action2_3;
+    QAction *action3_3;
+    QAction *actionDefault;
+    QAction *actionRules_for_game;
+    QAction *actionAbut_programm;
+    QAction *actionInfo;
+    QAction *actionExit;
+    QAction *actionApp;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
     QWidget *widget;
     QVBoxLayout *verticalLayout;
-    QGroupBox *gbPlayMode;
-    QVBoxLayout *verticalLayout_2;
-    QRadioButton *rbRed;
-    QRadioButton *rbBlue;
-    QGroupBox *gbLevel;
-    QVBoxLayout *verticalLayout_3;
-    QSpinBox *sbAILevel;
     QPushButton *pbPlay;
+    QPushButton *pbStop;
+    QPushButton *pushButton;
+    QSpacerItem *verticalSpacer_3;
+    QLabel *label_2;
+    QLabel *label_3;
+    QSpacerItem *verticalSpacer_2;
+    QLabel *label;
     QSpacerItem *verticalSpacer;
     QMenuBar *menuBar;
     QMenu *menuFile;
-    QMenu *menuOptions;
-    QMenu *menuAbout;
+    QMenu *menuSettings;
+    QMenu *menuColor;
+    QMenu *menuChekers;
+    QMenu *menuReds;
+    QMenu *menuBLues;
+    QMenu *menuBackground;
+    QMenu *menuMore_app;
 
     void setupUi(QMainWindow *View)
     {
@@ -67,12 +82,36 @@ public:
         actionSave->setObjectName(QStringLiteral("actionSave"));
         actionOpen = new QAction(View);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
-        actionColor = new QAction(View);
-        actionColor->setObjectName(QStringLiteral("actionColor"));
-        actionGame = new QAction(View);
-        actionGame->setObjectName(QStringLiteral("actionGame"));
-        actionMore = new QAction(View);
-        actionMore->setObjectName(QStringLiteral("actionMore"));
+        action1 = new QAction(View);
+        action1->setObjectName(QStringLiteral("action1"));
+        action2 = new QAction(View);
+        action2->setObjectName(QStringLiteral("action2"));
+        action3 = new QAction(View);
+        action3->setObjectName(QStringLiteral("action3"));
+        action1_2 = new QAction(View);
+        action1_2->setObjectName(QStringLiteral("action1_2"));
+        action2_2 = new QAction(View);
+        action2_2->setObjectName(QStringLiteral("action2_2"));
+        action3_2 = new QAction(View);
+        action3_2->setObjectName(QStringLiteral("action3_2"));
+        action1_3 = new QAction(View);
+        action1_3->setObjectName(QStringLiteral("action1_3"));
+        action2_3 = new QAction(View);
+        action2_3->setObjectName(QStringLiteral("action2_3"));
+        action3_3 = new QAction(View);
+        action3_3->setObjectName(QStringLiteral("action3_3"));
+        actionDefault = new QAction(View);
+        actionDefault->setObjectName(QStringLiteral("actionDefault"));
+        actionRules_for_game = new QAction(View);
+        actionRules_for_game->setObjectName(QStringLiteral("actionRules_for_game"));
+        actionAbut_programm = new QAction(View);
+        actionAbut_programm->setObjectName(QStringLiteral("actionAbut_programm"));
+        actionInfo = new QAction(View);
+        actionInfo->setObjectName(QStringLiteral("actionInfo"));
+        actionExit = new QAction(View);
+        actionExit->setObjectName(QStringLiteral("actionExit"));
+        actionApp = new QAction(View);
+        actionApp->setObjectName(QStringLiteral("actionApp"));
         centralWidget = new QWidget(View);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -91,48 +130,44 @@ public:
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(-1, 0, 0, -1);
-        gbPlayMode = new QGroupBox(widget);
-        gbPlayMode->setObjectName(QStringLiteral("gbPlayMode"));
-        gbPlayMode->setMinimumSize(QSize(0, 0));
-        verticalLayout_2 = new QVBoxLayout(gbPlayMode);
-        verticalLayout_2->setSpacing(6);
-        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        rbRed = new QRadioButton(gbPlayMode);
-        rbRed->setObjectName(QStringLiteral("rbRed"));
-        rbRed->setChecked(true);
-
-        verticalLayout_2->addWidget(rbRed);
-
-        rbBlue = new QRadioButton(gbPlayMode);
-        rbBlue->setObjectName(QStringLiteral("rbBlue"));
-
-        verticalLayout_2->addWidget(rbBlue);
-
-
-        verticalLayout->addWidget(gbPlayMode);
-
-        gbLevel = new QGroupBox(widget);
-        gbLevel->setObjectName(QStringLiteral("gbLevel"));
-        verticalLayout_3 = new QVBoxLayout(gbLevel);
-        verticalLayout_3->setSpacing(6);
-        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        sbAILevel = new QSpinBox(gbLevel);
-        sbAILevel->setObjectName(QStringLiteral("sbAILevel"));
-        sbAILevel->setMinimum(1);
-        sbAILevel->setMaximum(4);
-        sbAILevel->setValue(3);
-
-        verticalLayout_3->addWidget(sbAILevel);
-
-
-        verticalLayout->addWidget(gbLevel);
-
         pbPlay = new QPushButton(widget);
         pbPlay->setObjectName(QStringLiteral("pbPlay"));
 
         verticalLayout->addWidget(pbPlay);
+
+        pbStop = new QPushButton(widget);
+        pbStop->setObjectName(QStringLiteral("pbStop"));
+
+        verticalLayout->addWidget(pbStop);
+
+        pushButton = new QPushButton(widget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+
+        verticalLayout->addWidget(pushButton);
+
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_3);
+
+        label_2 = new QLabel(widget);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setAlignment(Qt::AlignCenter);
+
+        verticalLayout->addWidget(label_2);
+
+        label_3 = new QLabel(widget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        verticalLayout->addWidget(label_3);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_2);
+
+        label = new QLabel(widget);
+        label->setObjectName(QStringLiteral("label"));
+
+        verticalLayout->addWidget(label);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -147,20 +182,46 @@ public:
         menuBar->setGeometry(QRect(0, 0, 515, 20));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
-        menuOptions = new QMenu(menuBar);
-        menuOptions->setObjectName(QStringLiteral("menuOptions"));
-        menuAbout = new QMenu(menuBar);
-        menuAbout->setObjectName(QStringLiteral("menuAbout"));
+        menuSettings = new QMenu(menuBar);
+        menuSettings->setObjectName(QStringLiteral("menuSettings"));
+        menuColor = new QMenu(menuSettings);
+        menuColor->setObjectName(QStringLiteral("menuColor"));
+        menuColor->setEnabled(true);
+        menuChekers = new QMenu(menuColor);
+        menuChekers->setObjectName(QStringLiteral("menuChekers"));
+        menuReds = new QMenu(menuChekers);
+        menuReds->setObjectName(QStringLiteral("menuReds"));
+        menuBLues = new QMenu(menuChekers);
+        menuBLues->setObjectName(QStringLiteral("menuBLues"));
+        menuBackground = new QMenu(menuColor);
+        menuBackground->setObjectName(QStringLiteral("menuBackground"));
+        menuMore_app = new QMenu(menuBar);
+        menuMore_app->setObjectName(QStringLiteral("menuMore_app"));
         View->setMenuBar(menuBar);
 
         menuBar->addAction(menuFile->menuAction());
-        menuBar->addAction(menuOptions->menuAction());
-        menuBar->addAction(menuAbout->menuAction());
+        menuBar->addAction(menuSettings->menuAction());
+        menuBar->addAction(menuMore_app->menuAction());
         menuFile->addAction(actionSave);
         menuFile->addAction(actionOpen);
-        menuOptions->addAction(actionColor);
-        menuAbout->addAction(actionGame);
-        menuAbout->addAction(actionMore);
+        menuFile->addAction(actionExit);
+        menuSettings->addAction(menuColor->menuAction());
+        menuColor->addAction(menuChekers->menuAction());
+        menuColor->addAction(menuBackground->menuAction());
+        menuColor->addAction(actionDefault);
+        menuChekers->addAction(menuReds->menuAction());
+        menuChekers->addAction(menuBLues->menuAction());
+        menuReds->addAction(action1);
+        menuReds->addAction(action2);
+        menuReds->addAction(action3);
+        menuBLues->addAction(action1_2);
+        menuBLues->addAction(action2_2);
+        menuBLues->addAction(action3_2);
+        menuBackground->addAction(action1_3);
+        menuBackground->addAction(action2_3);
+        menuBackground->addAction(action3_3);
+        menuMore_app->addAction(actionInfo);
+        menuMore_app->addAction(actionApp);
 
         retranslateUi(View);
 
@@ -172,32 +233,44 @@ public:
         View->setWindowTitle(QApplication::translate("View", "View", nullptr));
         actionSave->setText(QApplication::translate("View", "Save", nullptr));
 #ifndef QT_NO_SHORTCUT
-        actionSave->setShortcut(QApplication::translate("View", "Alt+S", nullptr));
+        actionSave->setShortcut(QApplication::translate("View", "Ctrl+S", nullptr));
 #endif // QT_NO_SHORTCUT
         actionOpen->setText(QApplication::translate("View", "Open", nullptr));
 #ifndef QT_NO_SHORTCUT
-        actionOpen->setShortcut(QApplication::translate("View", "Alt+O", nullptr));
+        actionOpen->setShortcut(QApplication::translate("View", "Ctrl+O", nullptr));
 #endif // QT_NO_SHORTCUT
-        actionColor->setText(QApplication::translate("View", "Color", nullptr));
+        action1->setText(QApplication::translate("View", "1", nullptr));
+        action2->setText(QApplication::translate("View", "2", nullptr));
+        action3->setText(QApplication::translate("View", "3", nullptr));
+        action1_2->setText(QApplication::translate("View", "1", nullptr));
+        action2_2->setText(QApplication::translate("View", "2", nullptr));
+        action3_2->setText(QApplication::translate("View", "3", nullptr));
+        action1_3->setText(QApplication::translate("View", "1", nullptr));
+        action2_3->setText(QApplication::translate("View", "2", nullptr));
+        action3_3->setText(QApplication::translate("View", "3", nullptr));
+        actionDefault->setText(QApplication::translate("View", "Default", nullptr));
+        actionRules_for_game->setText(QApplication::translate("View", "Rules for game", nullptr));
+        actionAbut_programm->setText(QApplication::translate("View", "About programm", nullptr));
+        actionInfo->setText(QApplication::translate("View", "Info", nullptr));
+        actionExit->setText(QApplication::translate("View", "Exit", nullptr));
 #ifndef QT_NO_SHORTCUT
-        actionColor->setShortcut(QApplication::translate("View", "Alt+C", nullptr));
+        actionExit->setShortcut(QApplication::translate("View", "Ctrl+E", nullptr));
 #endif // QT_NO_SHORTCUT
-        actionGame->setText(QApplication::translate("View", "Game", nullptr));
-#ifndef QT_NO_SHORTCUT
-        actionGame->setShortcut(QApplication::translate("View", "Alt+G", nullptr));
-#endif // QT_NO_SHORTCUT
-        actionMore->setText(QApplication::translate("View", "More", nullptr));
-#ifndef QT_NO_SHORTCUT
-        actionMore->setShortcut(QApplication::translate("View", "Alt+M", nullptr));
-#endif // QT_NO_SHORTCUT
-        gbPlayMode->setTitle(QApplication::translate("View", "Play mode", nullptr));
-        rbRed->setText(QApplication::translate("View", "Red", nullptr));
-        rbBlue->setText(QApplication::translate("View", "Blue", nullptr));
-        gbLevel->setTitle(QApplication::translate("View", "Level", nullptr));
+        actionApp->setText(QApplication::translate("View", "App", nullptr));
         pbPlay->setText(QApplication::translate("View", "Start", nullptr));
+        pbStop->setText(QApplication::translate("View", "Pause", nullptr));
+        pushButton->setText(QApplication::translate("View", "Exit", nullptr));
+        label_2->setText(QString());
+        label_3->setText(QString());
+        label->setText(QString());
         menuFile->setTitle(QApplication::translate("View", "File", nullptr));
-        menuOptions->setTitle(QApplication::translate("View", "Options", nullptr));
-        menuAbout->setTitle(QApplication::translate("View", "About", nullptr));
+        menuSettings->setTitle(QApplication::translate("View", "Settings", nullptr));
+        menuColor->setTitle(QApplication::translate("View", "Color", nullptr));
+        menuChekers->setTitle(QApplication::translate("View", "Chekers", nullptr));
+        menuReds->setTitle(QApplication::translate("View", "Reds", nullptr));
+        menuBLues->setTitle(QApplication::translate("View", "Blues", nullptr));
+        menuBackground->setTitle(QApplication::translate("View", "Background", nullptr));
+        menuMore_app->setTitle(QApplication::translate("View", "More app", nullptr));
     } // retranslateUi
 
 };

@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     game.cpp
 
 HEADERS  += view.h \
-    game.h
+    game.h \
+    constants.h
 
 FORMS    += \
     view.ui

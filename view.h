@@ -36,6 +36,38 @@ private slots:
     void on_actionSave_triggered();
     void on_actionOpen_triggered();
 
+    void on_action1_triggered();
+
+    void on_action2_triggered();
+
+    void on_action3_triggered();
+
+    void on_actionDefault_triggered();
+
+    void on_action1_2_triggered();
+
+    void on_action2_2_triggered();
+
+    void on_action3_2_triggered();
+
+    void on_action1_3_triggered();
+
+    void on_action2_3_triggered();
+
+    void on_action3_3_triggered();
+
+    void on_actionInfo_triggered();
+
+    void on_pbStop_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_actionExit_triggered();
+
+    void hideTextLabel();
+
+    void on_actionApp_triggered();
+
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

@@ -18,7 +18,9 @@ public:
         CT_BLUE = 2
     };
 
-    void setPlayMode(ChekerType gameMode) { gamemode = gameMode; }
+    int getStep() { return step; }
+    void step_plus() { step++; }
+    void setPlayMode(ChekerType gameMode) { gamemode = CT_RED; }
     ChekerType getPlayMode() { return gamemode; }
 
     void setActive(bool active) { this->active = active; }
@@ -57,6 +59,7 @@ public:
     int getSelectedChekerIndex() { return selectedCheker; }
     void setSelectedChekerIndex(int chekerindex) { selectedCheker = chekerindex; }
     bool canMoveToPosition(int chekerIndex, const QPoint &pos);
+    bool canBigMoveToPosition(int chekerIndex, const QPoint &pos);
     bool moveSelectedChekerToPosition(const QPoint &pos);
 
     bool checkRange(int x, int y) { return (x >= 0 && x <= 7 && y >= 0 && y <= 7); }
@@ -78,16 +81,20 @@ private:
     bool active; //state game
     bool chekerTurn;
     int AILevel;
+    int step;
     int selectedCheker;
 
     int map[8][8]; // main array
+
     QQueue <QPoint> searchWay;
     QPoint possibleMoves[8];
 
     bool canMove(int x, int y);
     bool canMove(const QPoint &point) { return canMove(point.x(), point.y()); }
+    bool canMove(const QPoint &currpoint, int x, int y);
+    bool canMove(const QPoint &currpoint, const QPoint &point) { return canMove(currpoint, point.x(), point.y()); }
 
-    int getHeuristicEvulation(ChekerType cheker);
+    int getHeuristicEvulation(int chekerindex);
     int runMinMax(ChekerType cheker, int recursiveLevel, int alpha, int beta);
     void temporaryChekerMovement(int chekerindex, int x, int y);
     void temporaryChekerMovement(int chekerindex, const QPoint &point) { temporaryChekerMovement(chekerindex, point.x(), point.y()); }
